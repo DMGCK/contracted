@@ -53,5 +53,32 @@ namespace contracted.Repositories
       string sql = @"SELECT * FROM jobs WHERE id = @id";
       return _db.QueryFirstOrDefault<Job>(sql, new { id });
     }
+
+    internal List<ContractorJobViewModel> GetByCompanyId(int id)
+    {
+      // coming from company
+      string sql = @"
+      SELECT j.id AS jobId,
+      ct.*,
+      ct.id AS id
+      FROM jobs j
+      JOIN contractors ct ON ct.id = j.contractorId
+      WHERE j.companyId = @id
+      ";
+      return _db.Query<ContractorJobViewModel>(sql, new { id }).ToList();
+    }
+
+    internal List<CompanyJobViewModel> GetJobsByContractorId(int id)
+    {
+      string sql = @"
+      SELECT j.id AS jobId,
+      cy.*,
+      cy.id AS id
+      FROM jobs j
+      JOIN companies cy ON cy.id = j.companyId
+      WHERE j.contractorId = @id
+      ";
+      return _db.Query<CompanyJobViewModel>(sql, new { id }).ToList();
+    }
   }
 }

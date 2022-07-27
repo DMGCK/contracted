@@ -69,5 +69,17 @@ namespace contracted.Services
       }
       return found;
     }
+
+    internal List<ContractorJobViewModel> GetByCompanyId(int id)
+    {
+      List<ContractorJobViewModel> contractors = _jr.GetByCompanyId(id);
+      return contractors;
+    }
+
+    internal List<CompanyJobViewModel> GetJobsByContractorId(int id)
+    {
+      List<CompanyJobViewModel> companies = _jr.GetJobsByContractorId(id);
+      return companies;
+    }
   }
 }

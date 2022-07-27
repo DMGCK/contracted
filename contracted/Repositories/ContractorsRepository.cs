@@ -60,4 +60,5 @@ namespace contracted.Repositories
       return _db.QueryFirstOrDefault<Contractor>(sql, new { id });
     }
   }
+
 }

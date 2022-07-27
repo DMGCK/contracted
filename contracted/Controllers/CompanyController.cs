@@ -11,11 +11,13 @@ namespace contracted.Controllers
   [ApiController]
   public class CompanyController : ControllerBase, IController<Company>
   {
-    CompaniesService _cs;
+    private readonly CompaniesService _cs;
+    private readonly JobsService _js;
 
-    public CompanyController(CompaniesService cs)
+    public CompanyController(CompaniesService cs, JobsService js)
     {
       _cs = cs;
+      _js = js;
     }
 
     [HttpPost]
@@ -86,5 +88,19 @@ namespace contracted.Controllers
         return BadRequest(e.Message);
       }
     }
+    [HttpGet("{id}/contractors")]
+    public ActionResult<List<ContractorJobViewModel>> GetByCompanyId(int id)
+    {
+      try
+      {
+        List<ContractorJobViewModel> contractors = _js.GetByCompanyId(id);
+        return Ok(contractors);
+      }
+      catch (Exception e)
+      {
+        return BadRequest(e.Message);
+      }
+    }
+
   }
 }

@@ -11,10 +11,12 @@ namespace contracted.Controllers
   [Route("api/[controller]")]
   public class ContractorsController : ControllerBase, IController<Contractor>
   {
-    ContractorsService _cs;
+    private readonly JobsService _js;
+    private readonly ContractorsService _cs;
 
-    public ContractorsController(ContractorsService cs)
+    public ContractorsController(JobsService js, ContractorsService cs)
     {
+      _js = js;
       _cs = cs;
     }
 
@@ -87,6 +89,19 @@ namespace contracted.Controllers
       {
         Contractor contractor = _cs.GetById(id);
         return Ok(contractor);
+      }
+      catch (Exception e)
+      {
+        return BadRequest(e.Message);
+      }
+    }
+    [HttpGet("{id}/company")]
+    public ActionResult<List<CompanyJobViewModel>> GetJobsByContractorId(int id)
+    {
+      try
+      {
+        List<CompanyJobViewModel> companies = _js.GetJobsByContractorId(id);
+        return Ok(companies);
       }
       catch (Exception e)
       {
